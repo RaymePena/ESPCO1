@@ -1,0 +1,13 @@
+const soundByte = () => {
+		let sound = new Audio('./dist/sounds/Culling_Blade.mp3.mpeg');
+		return sound.play();
+	};
+    startButton.addEventListener('click', soundByte);
+
+    	<button class="btn btn-warning" id="vibrate-btn" onclick="">
+					Vibrate
+				</button>
+
+//getting all the values out of the divs holding the symbols.
+
+var x = document.getElementById("card-buttons").querySelectorAll("div.card-body");

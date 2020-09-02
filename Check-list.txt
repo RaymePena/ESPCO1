@@ -1,0 +1,14 @@
+
+- Change counter from 25 to 10, 
+- Unicode is out. SVG is in. zener svg in wikipedia
+    * spike svg
+- jQuery is out. Vanilla JS is in.
+- Voice gen and rec are out. Buttons are in.
+- Play pleasant sound for right answer
+    * spike to play the sound
+- Vibrate for wrong answer
+    * spike to vibrate
+
+- ESP threshold from 11 to 5, 
+- Pick a random card each time, not from a deck. That means it's possible, although highly improbably, to randomly get 10 stars (1 in 10 million)
+- You must submit a checklist URL.
