@@ -19,19 +19,18 @@
 	const modalButton = document.getElementById('modal-btn');
 	const xModalButton = document.getElementById('x-close');
 	let card;
+	let cardSource;
 	let totalCorrect = 0;
 	let hits = 0;
 
-	const shuffleRandom = () => {
-		let cardSource;
-		const shuffleCard = _.shuffle(cards);
-		const randomCardIndex = _.random(0, shuffleCard.length);
-
-		if (cards[randomCardIndex].value && cards[randomCardIndex].name) {
-			card = cards[randomCardIndex].name.toLocaleLowerCase();
-			cardSource = cards[randomCardIndex].value;
-		}
-		addSymbol(cardSource, card);
+	/**
+	 * Symbol add the image to the front of the card in the html document.
+	 * @param {the path where the card can be found} path
+	 * @param {* the name of the card} name
+	 */
+	const addSymbol = (path, name) => {
+		cardSymbol = name;
+		frontOfCard.innerHTML = `<img src="${path}" alt="${name}" />`;
 	};
 
 	/**
@@ -39,8 +38,8 @@
 	 */
 
 	const soundByte = async () => {
-		let sound = await new Audio('./dist/sounds/Culling_Blade.mp3.mpeg');
-		return sound.play();
+		let sound = await new Audio('./dist/sounds/Vo_bounty_hunter.mp3');
+		sound.play();
 	};
 
 	/**
@@ -66,40 +65,53 @@
 
 	modalButton.addEventListener('click', () => {
 		closeModal();
+		location.reload();
 	});
 
 	xModalButton.addEventListener('click', () => {
 		closeModal();
+		location.reload();
 	});
 
 	/**
-	 * Vibrate
+	 * Vibrate the mobile dive it the user miss
 	 */
 
 	const vibrateAction = (ms) => {
 		return navigator.vibrate(ms);
 	};
-	const addSymbol = (symbol, name) => {
-		cardSymbol = name;
-		frontOfCard.innerHTML = `<img src="${symbol}" alt="${name}" />`;
-	};
 
 	/**
-	 * compare the cards with a card click
+	 * Randomize the cards
 	 */
+	const shuffleRandom = () => {
+		const shuffleCard = _.shuffle(cards);
+		const randomCardIndex = _.random(0, cards.length);
+		if (
+			cards[randomCardIndex].value !== undefined &&
+			cards[randomCardIndex].name !== undefined
+		) {
+			card = cards[randomCardIndex].name.toLocaleLowerCase();
+			cardSource = cards[randomCardIndex].value;
+		} else {
+			card = cards[0].name;
+			cardSource = cards[0].value;
+		}
+		addSymbol(cardSource, card);
+	};
+	shuffleRandom();
 
-	const compareCards = (cardSymbol) => {
-		console.log(card, 9999999999);
-		console.log(cardSymbol, 888888888);
-		if (cardSymbol === card) {
+	/**
+	 *
+	 * @param {*} cardName
+	 */
+	const compareCards = (cardName) => {
+		if (cardName === card) {
 			totalCorrect++;
 			soundByte();
-			displayCard();
 		} else {
 			vibrateAction(200);
-			displayCard();
 		}
-		shuffleRandom();
 	};
 
 	/**
@@ -107,16 +119,19 @@
 	 */
 
 	const displayCard = () => {
-		hits++;
 		if (hits <= 11) {
 			backOfCard.style.display = 'none';
 			setTimeout(() => {
 				backOfCard.style.display = 'block';
+				shuffleRandom();
 			}, 1000);
 		}
 		if (hits === 11) {
-			displayModal(totalCorrect);
+			setTimeout(() => {
+				displayModal(totalCorrect);
+			}, 1000);
 		}
+		hits++;
 	};
 
 	/**
@@ -127,7 +142,6 @@
 	const displayModal = (answer) => {
 		let p = document.querySelector('.modal-body p');
 		let header = document.querySelector('.modal-body h3');
-		console.log(hits);
 		if (answer > 5) {
 			header.innerHTML = `Congratulations!, You have ninja ESP Powers`;
 			p.innerHTML = `Score: <br/> Correct: ${answer} <br/> ${hits - answer}`;
@@ -139,7 +153,6 @@
 			}`;
 			openModal();
 		}
-		count = 0;
 	};
 	/**
 	 * shuffles and random the cards.
@@ -148,25 +161,29 @@
 	waves.addEventListener('click', () => {
 		const wavesSymbol = waves.getAttribute('data-value');
 		compareCards(wavesSymbol);
+		displayCard();
 	});
 
 	circle.addEventListener('click', () => {
 		const circleSymbol = circle.getAttribute('data-value');
 		compareCards(circleSymbol);
+		displayCard();
 	});
 
 	star.addEventListener('click', () => {
 		const starSymbol = star.getAttribute('data-value');
 		compareCards(starSymbol);
+		displayCard();
 	});
 
 	square.addEventListener('click', () => {
 		const squareSymbol = square.getAttribute('data-value');
-		console.log(squareSymbol);
 		compareCards(squareSymbol);
+		displayCard();
 	});
 	plus.addEventListener('click', () => {
 		const plusSymbol = plus.getAttribute('data-value');
 		compareCards(plusSymbol);
+		displayCard();
 	});
 })();

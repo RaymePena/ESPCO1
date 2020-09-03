@@ -92,6 +92,17 @@ section {
 	top: 4.9%;
 	left: 6%;
 }
+#mainModal {
+	position: fixed;
+	top: 3%;
+	right: 3%;
+	left: 3%;
+	width: auto;
+	margin: 0;
+}
+.modal-body {
+	height: 60%;
+}
 
 main .card {
 	position: relative;
@@ -124,4 +135,11 @@ main .card {
 }
 .start-btn {
 	left: 78%;
+}
+
+@media screen and (max-width: 500px) {
+	#mainModal {
+		width: 300px;
+		top: 0%;
+	}
 }
