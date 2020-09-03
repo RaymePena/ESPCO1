@@ -21,6 +21,7 @@
 	let card;
 	let cardSource;
 	let totalCorrect = 0;
+	let cardMiss = 0;
 	let hits = 0;
 
 	/**
@@ -110,8 +111,14 @@
 			totalCorrect++;
 			soundByte();
 		} else {
+			cardMiss++;
 			vibrateAction(200);
 		}
+
+		let correctGuess = document.querySelector('.correct-guess');
+		correctGuess.innerHTML = `<strong>Hits:</strong> ${totalCorrect}  `;
+		let miss = document.querySelector('.card-miss');
+		miss.innerHTML = `<prev> <strong>Miss:</strong> ${cardMiss} </prev>`;
 	};
 
 	/**
@@ -119,19 +126,19 @@
 	 */
 
 	const displayCard = () => {
-		if (hits <= 11) {
+		if (hits <= 10) {
 			backOfCard.style.display = 'none';
 			setTimeout(() => {
 				backOfCard.style.display = 'block';
 				shuffleRandom();
 			}, 1000);
 		}
+		hits++;
 		if (hits === 11) {
 			setTimeout(() => {
 				displayModal(totalCorrect);
-			}, 1000);
+			}, 500);
 		}
-		hits++;
 	};
 
 	/**
@@ -144,13 +151,13 @@
 		let header = document.querySelector('.modal-body h3');
 		if (answer > 5) {
 			header.innerHTML = `Congratulations!, You have ninja ESP Powers`;
-			p.innerHTML = `Score: <br/> Correct: ${answer} <br/> ${hits - answer}`;
+			p.innerHTML = `Score: <br/> Correct: ${answer} <br/> ${
+				hits - 1 - answer
+			}`;
 			openModal();
 		} else {
 			header.innerHTML = `Sorry!, Your ESP Powers Need more training`;
-			p.innerHTML = `Score: <br /> Correct: ${answer} <br/> Miss: ${
-				hits - answer
-			}`;
+			p.innerHTML = `Score: <br /> Correct: ${answer} <br/> Miss: ${cardMiss}`;
 			openModal();
 		}
 	};
